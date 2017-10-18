@@ -8,5 +8,16 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
+  app:
+    user: ${UID_GID:-0:0}
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: ./docker/app.Dockerfile
+    volumes:
+      - .:/usr/src/app
+
+
 volumes:
   db-data:
