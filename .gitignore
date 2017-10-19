@@ -6,9 +6,9 @@ pom.xml.asc
 *.jar
 *.class
 /.lein-*
+/.nrepl-history
 /.nrepl-port
 .hgignore
 .hg/
 .idea/
 *.iml
-.env
