@@ -4,7 +4,12 @@
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
           :dependencies   '[[org.clojure/clojure "RELEASE"]
-                            [adzerk/boot-test "RELEASE" :scope "test"]])
+                            [adzerk/boot-test "RELEASE" :scope "test"]
+                            [onetom/boot-lein-generate "0.1.3" :scope "test"]])
+
+; this will generate project.clj on every run that is needed to work with the project in IDEA
+(require 'boot.lein)
+(boot.lein/generate)
 
 (task-options!
  aot {:namespace   #{'money-sync.core}}
