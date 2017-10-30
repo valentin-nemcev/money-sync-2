@@ -6,9 +6,19 @@ Install Docker: [Windows](https://docs.docker.com/docker-for-windows/install/#do
 
 ## Runbook
 
-Start application
+Start application:
 ```bash
 docker-compose up         # Start application
 docker-compose --build up # Rebuild containers (required after configuration change) and start 
 docker-compose down       # Stop application
+```
+
+Start clojure repl with app context:
+```bash
+docker-compose run app boot repl
+```
+
+Execute SQL queries:
+```bash
+docker-compose exec db psql -U postgres 
 ```
