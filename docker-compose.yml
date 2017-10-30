@@ -9,7 +9,6 @@ services:
       - db-data:/var/lib/postgresql/data
 
   app:
-    user: ${UID_GID:-0:0}
     depends_on:
       - db
     build:
@@ -17,6 +16,9 @@ services:
       dockerfile: ./docker/app.Dockerfile
     volumes:
       - .:/usr/src/app
+    environment:
+      - DOCKER_UID
+      - DOCKER_GID
 
 
 volumes:
