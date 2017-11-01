@@ -7,7 +7,8 @@
                             [adzerk/boot-test "RELEASE" :scope "test"]
                             [migratus "1.0.0"]
                             [org.slf4j/slf4j-log4j12 "1.7.9"]
-                            [onetom/boot-lein-generate "0.1.3" :scope "test"]])
+                            [onetom/boot-lein-generate "0.1.3" :scope "test"]
+                            [org.postgresql/postgresql "RELEASE"]])
 
 ; this will generate project.clj on every run that is needed to work with the project in IDEA
 (require 'boot.lein)

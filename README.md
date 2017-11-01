@@ -20,5 +20,5 @@ docker-compose run app boot repl
 
 Execute SQL queries:
 ```bash
-docker-compose exec db psql -U postgres 
+docker-compose exec db psql -U postgres
 ```
