@@ -31,7 +31,6 @@
   '[adzerk.boot-reload    :refer [reload]]
   '[hoplon.boot-hoplon    :refer [hoplon prerender]]
   '[pandeiro.boot-http    :refer [serve]])
->>>>>>> Add hoplon-castra template files
 
 (boot.lein/generate)
 
