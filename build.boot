@@ -2,7 +2,7 @@
 (def version "0.1.0-SNAPSHOT")
 
 (set-env! :resource-paths #{"resources" "src/clj"}
-          :source-paths   #{"test"}
+          :source-paths   #{"test" "src/cljs" "src/hl"}
           :dependencies   '[[org.clojure/clojure "RELEASE"]
                             [org.clojure/clojurescript "1.9.495"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
