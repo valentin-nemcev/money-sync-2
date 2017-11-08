@@ -69,9 +69,9 @@
       :handler 'money-sync.handler/app
       :reload  true)
     (watch)
-    (speak)
+    ; (speak)
     (hoplon)
-    (reload)
+    (reload :port 8090)
     (cljs)))
 
 (deftask prod

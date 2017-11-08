@@ -7,18 +7,23 @@ services:
       dockerfile: postgres.Dockerfile
     volumes:
       - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
 
-  app:
-    depends_on:
-      - db
-    build:
-      context: .
-      dockerfile: ./docker/app.Dockerfile
-    volumes:
-      - .:/usr/src/app
-    environment:
-      - DOCKER_UID
-      - DOCKER_GID
+  # app:
+  #   depends_on:
+  #     - db
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/app.Dockerfile
+  #   volumes:
+  #     - .:/usr/src/app
+  #   environment:
+  #     - DOCKER_UID
+  #     - DOCKER_GID
+  #   ports:
+  #     - "8000"
+  #     - "8090"
 
 
 volumes:
