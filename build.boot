@@ -26,12 +26,12 @@
 
 (require
   'boot.lein
-  ; this will generate project.clj on every run that is needed to work with the project in IDEA
   '[adzerk.boot-cljs      :refer [cljs]]
   '[adzerk.boot-reload    :refer [reload]]
   '[hoplon.boot-hoplon    :refer [hoplon prerender]]
   '[pandeiro.boot-http    :refer [serve]])
 
+; this will generate project.clj on every run that is needed to work with the project in IDEA
 (boot.lein/generate)
 
 (task-options!
@@ -91,3 +91,16 @@
         (web :serve 'money_sync.handler/app)
         (war)
         (target :dir #{"target"})))
+
+(require 'migratus.core)
+
+(def config {:store         :database
+             :migration-dir "migrations/"
+             :db            {:classname   "org.postgresql.Driver"
+                             :subprotocol "postgresql"
+                             :subname     "//localhost:5432/"
+                             :user        "postgres"}})
+
+(deftask pending []
+  (with-pass-thru _
+    (println (migratus.core/pending-list config))))
