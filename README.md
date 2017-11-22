@@ -18,6 +18,11 @@ Start clojure repl with app context:
 docker-compose run app boot repl
 ```
 
+Run several commands in the same app container:
+```bash
+docker-compose run app bash
+```
+
 Execute SQL queries:
 ```bash
 docker-compose exec db psql -U postgres

@@ -29,9 +29,11 @@
   '[adzerk.boot-cljs      :refer [cljs]]
   '[adzerk.boot-reload    :refer [reload]]
   '[hoplon.boot-hoplon    :refer [hoplon prerender]]
-  '[pandeiro.boot-http    :refer [serve]])
+  '[pandeiro.boot-http    :refer [serve]]
+  '[adzerk.boot-test :refer [test]])
 
-; this will generate project.clj on every run that is needed to work with the project in IDEA
+; this will generate project.clj on every run
+; that is needed to work with the project in IDEA
 (boot.lein/generate)
 
 (task-options!
@@ -57,8 +59,6 @@
   [a args ARG [str] "the arguments for the application."]
   (require '[money-sync.core :as app])
   (apply (resolve 'app/-main) args))
-
-(require '[adzerk.boot-test :refer [test]])
 
 (deftask dev
   "Build money-sync for local development."
