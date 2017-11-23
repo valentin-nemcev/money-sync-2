@@ -7,7 +7,7 @@
                             [org.clojure/clojurescript "1.9.495"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
                             [migratus "1.0.0"]
-                            [org.slf4j/slf4j-log4j12 "1.7.9"]
+                            [com.fzakaria/slf4j-timbre "0.3.7"]
                             [onetom/boot-lein-generate "0.1.3" :scope "test"]
                             [org.postgresql/postgresql "RELEASE"]
                             [adzerk/boot-reload        "0.5.1"]
@@ -101,6 +101,22 @@
                              :subname     "//localhost:5432/"
                              :user        "postgres"}})
 
-(deftask pending []
-  (with-pass-thru _
-    (println (migratus.core/pending-list config))))
+
+; Ported from
+; https://github.com/yogthos/migratus-lein/blob/master/src/leiningen/migratus.clj
+
+(deftask migratus-migrate
+  []
+  (println (migratus.core/migrate config)))
+
+(deftask migratus-up
+  [m migration-id MIGRATIONID #{int} "Migration ids"]
+  (println (apply migratus.core/up config migration-id)))
+
+(deftask migratus-down
+  [m migration-id MIGRATIONID [int] "Migration ids"]
+  (println (apply migratus.core/down config migration-id)))
+
+(deftask migratus-pending
+  []
+  (println (migratus.core/pending-list config)))
