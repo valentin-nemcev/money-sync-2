@@ -9,7 +9,7 @@
                             [migratus "1.0.0"]
                             [com.fzakaria/slf4j-timbre "0.3.7"]
                             [onetom/boot-lein-generate "0.1.3" :scope "test"]
-                            [org.postgresql/postgresql "RELEASE"]
+                            [org.postgresql/postgresql "42.1.4"]
                             [adzerk/boot-reload        "0.5.1"]
                             [compojure                 "1.6.0-beta3"]
                             [hoplon/castra             "3.0.0-alpha7"]
@@ -69,7 +69,6 @@
       :handler 'money-sync.handler/app
       :reload  true)
     (watch)
-    ; (speak)
     (hoplon)
     (reload :port 8090)
     (cljs)))
@@ -99,7 +98,8 @@
              :db            {:classname   "org.postgresql.Driver"
                              :subprotocol "postgresql"
                              :subname     "//localhost:5432/"
-                             :user        "postgres"}})
+                             :user        "postgres"
+                             :password    "postgres"}})
 
 
 ; Ported from

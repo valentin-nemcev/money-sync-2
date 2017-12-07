@@ -9,12 +9,11 @@
         </layout>
     </appender>
 
-    <root>
-    </root>
-
     <logger name="migratus">
         <level value="DEBUG"/>
         <appender-ref ref="console"/>
     </logger>
+
+    <root/>
 
 </log4j:configuration>
