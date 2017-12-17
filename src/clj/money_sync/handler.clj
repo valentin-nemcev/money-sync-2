@@ -1,14 +1,14 @@
 (ns money-sync.handler
   (:require
-   [castra.middleware              :refer [wrap-castra]]
-   [clojure.java.io                :as    io]
-   [compojure.core                 :refer [defroutes GET]]
-   [compojure.route                :refer [resources not-found]]
-   [ring.middleware.defaults       :refer [wrap-defaults api-defaults]]
-   [ring.middleware.resource       :refer [wrap-resource]]
-   [ring.middleware.session        :refer [wrap-session]]
-   [ring.middleware.session.cookie :refer [cookie-store]]
-   [ring.util.response             :refer [content-type resource-response]]))
+    [castra.middleware :refer [wrap-castra]]
+    [clojure.java.io :as io]
+    [compojure.core :refer [defroutes GET]]
+    [compojure.route :refer [resources not-found]]
+    [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
+    [ring.middleware.resource :refer [wrap-resource]]
+    [ring.middleware.session :refer [wrap-session]]
+    [ring.middleware.session.cookie :refer [cookie-store]]
+    [ring.util.response :refer [content-type resource-response]]))
 
 (defroutes app-routes
   (GET "/" req

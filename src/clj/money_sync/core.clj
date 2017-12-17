@@ -8,8 +8,8 @@
 
 (ns money-sync.core
   (:require
-    [money-sync.handler          :as handler]
-    [ring.adapter.jetty             :refer [run-jetty]]))
+    [money-sync.handler :as handler]
+    [ring.adapter.jetty :refer [run-jetty]]))
 
 (def server (atom nil))
 
