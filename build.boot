@@ -7,7 +7,6 @@
                             [org.clojure/clojurescript "1.9.495"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
                             [migratus "1.0.0"]
-                            [com.fzakaria/slf4j-timbre "0.3.7"]
                             [onetom/boot-lein-generate "0.1.3" :scope "test"]
                             [org.postgresql/postgresql "42.1.4"]
                             [adzerk/boot-reload "0.5.1"]
