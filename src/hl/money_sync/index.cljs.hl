@@ -9,4 +9,5 @@
     (link :href "app.css" :rel "stylesheet"))
   (body
     (h1 (text "Hello, Hoplon and Castra!"))
-    (pre (text "session = ~{rpc/session-number}, random = ~{rpc/random-number}"))))
+    (pre (text "session = ~{rpc/session-number}, random = ~{rpc/random-number}"))
+    (for-tpl [{:keys [id name]} rpc/accounts] (div :id id (text name)))))

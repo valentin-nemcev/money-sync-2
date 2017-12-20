@@ -9,6 +9,9 @@
 (defc error nil)
 (defc loading [])
 
+(defc accounts [{:id 1 :name "test"}
+                {:id 2 :name "another test"}])
+
 (defc= random-number  (get state :random))
 (defc= session-number (get state :session))
 
