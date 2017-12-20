@@ -18,6 +18,10 @@
 (def get-state
   (mkremote 'money-sync.api/get-state state error loading))
 
+(def timer (atom nil))
+
 (defn init []
   (get-state)
-  (js/setInterval get-state 1000))
+  (swap! timer #(do
+                  (js/clearInterval %)
+                  (js/setInterval get-state 1000))))

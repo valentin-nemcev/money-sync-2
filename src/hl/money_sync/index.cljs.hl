@@ -4,10 +4,11 @@
 
 (rpc/init)
 
-(html
+(html :class "mdc-typography"
   (head
-    (link :href "app.css" :rel "stylesheet"))
+    (link :href "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" :rel "stylesheet")
+    )
   (body
-    (h1 (text "Hello, Hoplon and Castra!"))
+    (h1 :class "mdc-typography--display1" (text "Hello, Hoplon and Castra!"))
     (pre (text "session = ~{rpc/session-number}, random = ~{rpc/random-number}"))
     (for-tpl [{:keys [id name]} rpc/accounts] (div :id id (text name)))))
