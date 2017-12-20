@@ -104,6 +104,8 @@
 ; Ported from
 ; https://github.com/yogthos/migratus-lein/blob/master/src/leiningen/migratus.clj
 
+; Boot deftask options DSL:
+; https://github.com/boot-clj/boot/wiki/Task-Options-DSL
 (deftask migratus-migrate
   []
   (println (migratus.core/migrate config)))
@@ -119,3 +121,7 @@
 (deftask migratus-pending
   []
   (println (migratus.core/pending-list config)))
+
+(deftask migratus-create
+   [n name NAME str "Migration name"]
+   (println (migratus.core/create config name)))
