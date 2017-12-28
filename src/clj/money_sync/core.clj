@@ -9,7 +9,9 @@
 (ns money-sync.core
   (:require
     [money-sync.handler :as handler]
-    [ring.adapter.jetty :refer [run-jetty]]))
+    [ring.adapter.jetty :refer [run-jetty]]
+    [honeysql.core :as sql]
+    [clojure.java.jdbc :as jdbc]))
 
 (def server (atom nil))
 
@@ -20,3 +22,12 @@
   "Start castra demo server (port 33333)."
   [port public-path]
   (swap! server #(or % (app port public-path))))
+
+(def db {:dbtype   "postgres"
+         :dbname   "postgres"
+         :user     "postgres"
+         :password "postgres"})
+
+(defn list-accounts
+  []
+  (jdbc/query db (sql/format {:select [:*] :from [:account]})))

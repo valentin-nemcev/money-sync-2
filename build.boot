@@ -8,7 +8,9 @@
                             [adzerk/boot-test "RELEASE" :scope "test"]
                             [migratus "1.0.0"]
                             [onetom/boot-lein-generate "0.1.3" :scope "test"]
+                            [org.clojure/java.jdbc "0.7.4"]
                             [org.postgresql/postgresql "42.1.4"]
+                            [honeysql "0.9.1"]
                             [adzerk/boot-reload "0.5.1"]
                             [compojure "1.6.0-beta3"]
                             [hoplon/castra "3.0.0-alpha7"]
@@ -29,7 +31,8 @@
   '[adzerk.boot-reload :refer [reload]]
   '[hoplon.boot-hoplon :refer [hoplon prerender]]
   '[pandeiro.boot-http :refer [serve]]
-  '[adzerk.boot-test :refer [test]])
+  '[adzerk.boot-test :refer [test]]
+  'money-sync.core)
 
 ; this will generate project.clj on every run
 ; that is needed to work with the project in IDEA
