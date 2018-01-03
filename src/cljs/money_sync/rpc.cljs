@@ -5,23 +5,12 @@
    [javelin.core]
    [castra.core :refer [mkremote]]))
 
-(defc state nil)
-(defc error nil)
-(defc loading [])
+(defc accounts nil)
+(defc accounts-error nil)
+(defc accounts-loading [])
 
-(defc accounts [{:id 1 :name "test"}
-                {:id 2 :name "another test"}])
-
-(defc= random-number  (get state :random))
-(defc= session-number (get state :session))
-
-(def get-state
-  (mkremote 'money-sync.api/get-state state error loading))
-
-(def timer (atom nil))
+(def list-accounts
+  (mkremote 'money-sync.api/list-accounts accounts accounts-error accounts-loading))
 
 (defn init []
-  (get-state)
-  (swap! timer #(do
-                  (js/clearInterval %)
-                  (js/setInterval get-state 1000))))
+  (list-accounts))
