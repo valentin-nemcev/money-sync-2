@@ -1,6 +1,6 @@
 (ns money-sync.api
   (:require [castra.core :refer [defrpc *session*]]
-            [money-sync.core :as core]))
+            [money-sync.db :as db]))
 
 (defrpc get-state []
   (swap! *session* update-in [:id] #(or % (rand-int 100)))
@@ -8,4 +8,4 @@
 
 (defrpc list-accounts
   []
-  (core/list-accounts))
+  (db/list-accounts))

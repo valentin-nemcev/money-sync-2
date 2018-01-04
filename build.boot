@@ -32,14 +32,14 @@
   '[hoplon.boot-hoplon :refer [hoplon prerender]]
   '[pandeiro.boot-http :refer [serve]]
   '[adzerk.boot-test :refer [test]]
-  'money-sync.core)
+  'money-sync.db)
 
 ; this will generate project.clj on every run
 ; that is needed to work with the project in IDEA
 (boot.lein/generate)
 
 (task-options!
- aot {:namespace   #{'money-sync.core}}
+ aot {:namespace   #{'money-sync.db}}
  pom {:project     project
       :version     version
       :description "FIXME: write description"
@@ -47,7 +47,7 @@
       :scm         {:url "https://github.com/yourname/money-sync"}
       :license     {"Eclipse Public License"
                     "http://www.eclipse.org/legal/epl-v10.html"}}
- jar {:main        'money-sync.core
+ jar {:main        'money-sync.db
       :file        (str "money-sync-" version "-standalone.jar")})
 
 (deftask build
