@@ -11,6 +11,7 @@
                             [org.clojure/java.jdbc "0.7.4"]
                             [org.postgresql/postgresql "42.1.4"]
                             [honeysql "0.9.1"]
+                            [nilenso/honeysql-postgres "0.2.3"]
                             [adzerk/boot-reload "0.5.1"]
                             [compojure "1.6.0-beta3"]
                             [hoplon/castra "3.0.0-alpha7"]

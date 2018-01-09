@@ -9,3 +9,7 @@
 (defrpc list-accounts
   []
   (db/list-accounts))
+
+(defrpc create-account
+  [name]
+  (db/create-account name))
