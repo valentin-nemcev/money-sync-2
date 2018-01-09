@@ -1,14 +1,22 @@
 (page "index.html"
   (:require
+    [cljsjs.material-components]
     [money-sync.rpc :as rpc]))
 
 (rpc/init)
 
 (html :class "mdc-typography"
   (head
-    (link :href "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" :rel "stylesheet")
-    )
+    (link :href "cljsjs/material-components/development/material-components.inc.css" :rel "stylesheet"))
   (body
     (h1 :class "mdc-typography--display2" (text "MoneySync"))
     (h2 :class "mdc-typography--display1" (text "Accounts"))
-    (for-tpl [{:keys [id name]} rpc/accounts] (div :id id (text name)))))
+    (for-tpl [{:keys [id name]} rpc/accounts] (div :id id (text name)))
+    (div :class "mdc-text-field" :data-mdc-auto-init "MDCTextField"
+         (input :type "text" :class "mdc-text-field__input" :id "new-account-name")
+         (label :class "mdc-text-field__label" :for "new-account-name" (text "New account"))
+         (div :class "mdc-text-field__bottom-line"))
+    (button :class "mdc-button" (text "Add account"))
+    ))
+
+(js/setTimeout js/window.mdc.autoInit 0)
