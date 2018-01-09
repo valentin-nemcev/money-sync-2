@@ -1,6 +1,6 @@
-(ns money-sync.core-test
+(ns money-sync.db-test
   (:require [clojure.test :refer :all]
-            [money-sync.core :refer :all]))
+            [money-sync.db :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

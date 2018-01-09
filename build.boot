@@ -11,6 +11,7 @@
                             [org.clojure/java.jdbc "0.7.4"]
                             [org.postgresql/postgresql "42.1.4"]
                             [honeysql "0.9.1"]
+                            [nilenso/honeysql-postgres "0.2.3"]
                             [adzerk/boot-reload "0.5.1"]
                             [compojure "1.6.0-beta3"]
                             [hoplon/castra "3.0.0-alpha7"]
@@ -33,14 +34,14 @@
   '[hoplon.boot-hoplon :refer [hoplon prerender]]
   '[pandeiro.boot-http :refer [serve]]
   '[adzerk.boot-test :refer [test]]
-  'money-sync.core)
+  'money-sync.db)
 
 ; this will generate project.clj on every run
 ; that is needed to work with the project in IDEA
 (boot.lein/generate)
 
 (task-options!
- aot {:namespace   #{'money-sync.core}}
+ aot {:namespace   #{'money-sync.db}}
  pom {:project     project
       :version     version
       :description "FIXME: write description"
@@ -48,7 +49,7 @@
       :scm         {:url "https://github.com/yourname/money-sync"}
       :license     {"Eclipse Public License"
                     "http://www.eclipse.org/legal/epl-v10.html"}}
- jar {:main        'money-sync.core
+ jar {:main        'money-sync.db
       :file        (str "money-sync-" version "-standalone.jar")})
 
 (deftask build
