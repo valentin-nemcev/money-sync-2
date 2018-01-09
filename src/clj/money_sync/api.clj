@@ -11,9 +11,10 @@
   (db/list-accounts))
 
 (defrpc create-account
-  [name]
-  (db/create-account name))
+  [fields]
+  (db/create-account fields)
+  (db/list-accounts))
 
 (defrpc delete-account
-  [name]
-  (db/delete-account name))
+  [id]
+  (db/delete-account id))

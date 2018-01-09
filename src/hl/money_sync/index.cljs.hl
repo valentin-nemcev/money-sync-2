@@ -3,7 +3,19 @@
     [cljsjs.material-components]
     [money-sync.rpc :as rpc]))
 
-(rpc/init)
+(rpc/list-accounts)
+
+(defc= loading?      (some-> rpc/loading seq count))
+(defc= error-message (some-> rpc/error .-message))
+
+(defn form-values
+  [form]
+  (->> form
+      js/jQuery
+      .serializeArray
+      (map #(vector (-> % .-name keyword) (.-value %)))
+      (into {})))
+
 
 (html :class "mdc-typography"
   (head
@@ -11,12 +23,14 @@
   (body
     (h1 :class "mdc-typography--display2" (text "MoneySync"))
     (h2 :class "mdc-typography--display1" (text "Accounts"))
+    (p :toggle loading? (text "Processing ~{loading?} requests..."))
+    (p :toggle error-message (text "Error: ~{error-message}"))
     (for-tpl [{:keys [id name]} rpc/accounts] (div :id id (text name)))
-    (div :class "mdc-text-field" :data-mdc-auto-init "MDCTextField"
-         (input :type "text" :class "mdc-text-field__input" :id "new-account-name")
-         (label :class "mdc-text-field__label" :for "new-account-name" (text "New account"))
-         (div :class "mdc-text-field__bottom-line"))
-    (button :class "mdc-button" (text "Add account"))
-    ))
+    (form :submit #(-> % .-target form-values rpc/create-account)
+      (div :class "mdc-text-field" :data-mdc-auto-init "MDCTextField"
+          (input :type "text" :class "mdc-text-field__input" :id "new-account-name" :name "name")
+          (label :class "mdc-text-field__label" :for "new-account-name" (text "New account"))
+          (div :class "mdc-text-field__bottom-line"))
+      (button :class "mdc-button" (text "Add account")))))
 
 (js/setTimeout js/window.mdc.autoInit 0)

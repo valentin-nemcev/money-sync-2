@@ -15,12 +15,12 @@
   (jdbc/query db (sql/format {:select [:*] :from [:account]})))
 
 (defn create-account
-  [name]
+  [{:name name}]
   (jdbc/query db (sql/format (-> (insert-into :account)
                                  (columns :id :name)
                                  (values [[(sql/call :nextval "account_id_seq") name]])))))
 
 (defn delete-account
-  [name]
+  [id]
   (jdbc/query db (sql/format (-> (delete-from :account)
-                                 (where [:= :name name])))))
+                                 (where [:= :name id])))))

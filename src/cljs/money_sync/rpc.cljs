@@ -6,11 +6,12 @@
    [castra.core :refer [mkremote]]))
 
 (defc accounts nil)
-(defc accounts-error nil)
-(defc accounts-loading [])
+(defc error nil)
+(defc loading [])
 
 (def list-accounts
-  (mkremote 'money-sync.api/list-accounts accounts accounts-error accounts-loading))
+  (mkremote 'money-sync.api/list-accounts accounts error loading))
 
-(defn init []
-  (list-accounts))
+(def create-account
+  (mkremote 'money-sync.api/create-account accounts error loading))
+
