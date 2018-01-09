@@ -19,3 +19,8 @@
   (jdbc/query db (sql/format (-> (insert-into :account)
                                  (columns :id :name)
                                  (values [[(sql/call :nextval "account_id_seq") name]])))))
+
+(defn delete-account
+  [name]
+  (jdbc/query db (sql/format (-> (delete-from :account)
+                                 (where [:= :name name])))))

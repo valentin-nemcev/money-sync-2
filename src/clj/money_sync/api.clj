@@ -13,3 +13,7 @@
 (defrpc create-account
   [name]
   (db/create-account name))
+
+(defrpc delete-account
+  [name]
+  (db/delete-account name))
