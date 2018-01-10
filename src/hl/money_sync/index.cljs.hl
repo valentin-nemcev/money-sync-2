@@ -19,13 +19,20 @@
 
 (html :class "mdc-typography"
   (head
-    (link :href "cljsjs/material-components/development/material-components.inc.css" :rel "stylesheet"))
+    (title "MoneySync")
+    (link :href "cljsjs/material-components/development/material-components.inc.css" :rel "stylesheet")
+    (link :href "https://fonts.googleapis.com/icon?family=Material+Icons" :rel "stylesheet"))
   (body
     (h1 :class "mdc-typography--display2" (text "MoneySync"))
     (h2 :class "mdc-typography--display1" (text "Accounts"))
     (p :toggle loading? (text "Processing ~{loading?} requests..."))
     (p :toggle error-message (text "Error: ~{error-message}"))
-    (for-tpl [{:keys [id name]} rpc/accounts] (div :id id (text name)))
+    (for-tpl
+      [{:keys [id name]} rpc/accounts]
+      (div :id id
+           (text name)
+           (button :class "mdc-button"
+                   (i :class "material-icons mdc-button__icon" (text "delete")))))
     (form :submit #(-> % .-target form-values rpc/create-account)
       (div :class "mdc-text-field" :data-mdc-auto-init "MDCTextField"
           (input :type "text" :class "mdc-text-field__input" :id "new-account-name" :name "name")
