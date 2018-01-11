@@ -28,8 +28,8 @@
   nil)
 
 (defn update-account
-  [id new-name]
+  [id {:keys [name]}]
   (jdbc/execute! db (sql/format (-> (update :account)
-                                    (sset {:name new-name})
+                                    (sset {:name name})
                                     (where [:= :id id]))))
   nil)

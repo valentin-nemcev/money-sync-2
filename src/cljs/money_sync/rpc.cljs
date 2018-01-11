@@ -17,3 +17,8 @@
 (def create-account
   (mkremote 'money-sync.api/create-account accounts error loading))
 
+(def delete-account
+  (mkremote 'money-sync.api/delete-account accounts error loading))
+
+(def update-account
+  (mkremote 'money-sync.api/update-account accounts error loading))

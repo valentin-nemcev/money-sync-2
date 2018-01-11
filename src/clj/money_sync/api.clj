@@ -17,4 +17,10 @@
 
 (defrpc delete-account
   [id]
-  (db/delete-account id))
+  (db/delete-account id)
+  (db/list-accounts))
+
+(defrpc update-account
+  [id fields]
+  (db/update-account id fields)
+  (db/list-accounts))

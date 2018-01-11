@@ -21,8 +21,7 @@
   (head
     (title "MoneySync")
     (link :href "cljsjs/material-components/development/material-components.inc.css" :rel "stylesheet")
-(link :href "https://fonts.googleapis.com/icon?family=Material+Icons" :rel "stylesheet")
-    )
+    (link :href "https://fonts.googleapis.com/icon?family=Material+Icons" :rel "stylesheet"))
   (body
     (h1 :class "mdc-typography--display2" "MoneySync")
     (h2 :class "mdc-typography--display1" "Accounts")
