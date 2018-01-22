@@ -13,9 +13,34 @@
   (->> form
       js/jQuery
       .serializeArray
+
+      ; #js [{name: "id", value: "15"}, ...] -> {:id "15" ...}
       (map #(vector (-> % .-name keyword) (.-value %)))
       (into {})))
 
+(defmethod on! :mdc
+  [elem _ f]
+  (with-dom elem (.attachTo f elem)))
+
+
+(defn split-map [m & ks]
+  (cons (apply dissoc m ks) (map m ks)))
+
+(defelem mdc-text-field
+  [attributes]
+  (let [[attributes name value label-children] (split-map attributes :name :value :label)
+        id (gensym name)]
+    (div :class "mdc-text-field" :mdc js/window.mdc.textField.MDCTextField attributes
+        (input :type "text" :class "mdc-text-field__input" :id id :name name :value value)
+        (label :class "mdc-text-field__label" :for id label-children)
+        (div :class "mdc-text-field__bottom-line"))))
+
+(defelem mdc-button
+  [attributes children]
+  (let [[attributes class icon] (split-map attributes :class :icon)]
+    (button :class (cons "mdc-button" (sequence class)) attributes
+            [(when icon (i :class "material-icons mdc-button__icon" icon))
+             children])))
 
 (html :class "mdc-typography"
   (head
@@ -27,17 +52,28 @@
     (h2 :class "mdc-typography--display1" "Accounts")
     (p :toggle loading? (text "Processing ~{loading?} requests..."))
     (p :toggle error-message (text "Error: ~{error-message}"))
+
     (for-tpl
       [{:keys [id name]} rpc/accounts]
-      (div :id id
-           name
-           (button :class "mdc-button"
-                   (i :class "material-icons mdc-button__icon" "delete"))))
-    (form :submit #(-> % .-target form-values rpc/create-account)
-      (div :class "mdc-text-field" :data-mdc-auto-init "MDCTextField"
-          (input :type "text" :class "mdc-text-field__input" :id "new-account-name" :name "name")
-          (label :class "mdc-text-field__label" :for "new-account-name" "New account")
-          (div :class "mdc-text-field__bottom-line"))
-      (button :class "mdc-button" "Add account"))))
+      (let [editing (cell false)]
+        (div :id id
+             (if-tpl editing
+                     (form :css/display "inline-block"
+                           :submit #(do
+                                      (->> % .-target form-values (rpc/update-account id))
+                                      (reset! editing false))
+                           (mdc-text-field :name "name" :label "Account name" :value name)
+                           (mdc-button :icon "done"))
+                     [(span name)
+                      (button :class "mdc-button"
+                              :click #(swap! editing not)
+                              (i :class "material-icons mdc-button__icon" "edit"))])
+             (mdc-button :icon "delete" :click #(rpc/delete-account @id)))))
+    (form :submit #(let
+                     [form (.-target %)]
+                     (rpc/create-account (form-values form))
+                     (.reset form))
+      (mdc-text-field :name "name" :label "New account name")
+      (mdc-button "Add account"))))
 
 (js/setTimeout js/window.mdc.autoInit 0)
