@@ -60,7 +60,7 @@
              (if-tpl editing
                      (form :css/display "inline-block"
                            :submit #(do
-                                      (->> % .-target form-values (rpc/update-account id))
+                                      (->> % .-target form-values (rpc/update-account @id))
                                       (reset! editing false))
                            (mdc-text-field :name "name" :label "Account name" :value name)
                            (mdc-button :icon "done"))
@@ -75,5 +75,3 @@
                      (.reset form))
       (mdc-text-field :name "name" :label "New account name")
       (mdc-button "Add account"))))
-
-(js/setTimeout js/window.mdc.autoInit 0)
