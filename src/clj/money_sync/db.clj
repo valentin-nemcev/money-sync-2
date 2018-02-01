@@ -2,7 +2,6 @@
   (:require
     [honeysql.core :as sql]
     [honeysql.helpers :refer :all]
-    [honeysql-postgres.helpers :refer :all]
     [clojure.java.jdbc :as jdbc]))
 
 (def db {:dbtype   "postgres"
@@ -12,7 +11,7 @@
 
 (defn list-accounts
   []
-  (jdbc/query db (sql/format {:select [:*] :from [:account]})))
+  (jdbc/query db (sql/format {:select [:*] :from [:account] :order-by [:name]})))
 
 (defn create-account
   [{:keys [name]}]
@@ -29,7 +28,7 @@
 
 (defn update-account
   [id {:keys [name]}]
-  (jdbc/execute! db (sql/format (-> (update :account)
+  (jdbc/execute! db (sql/format (-> (honeysql.helpers/update :account)
                                     (sset {:name name})
                                     (where [:= :id id]))))
   nil)
