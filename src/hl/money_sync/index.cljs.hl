@@ -42,36 +42,85 @@
             [(when icon (i :class "material-icons mdc-button__icon" icon))
              children])))
 
-(html :class "mdc-typography"
+(defelem mdc-list
+  [attributes children]
+  (let [[attributes class] (split-map attributes :class)]
+    (ul :class (cons "mdc-list" (sequence class)) attributes children)))
+
+(defelem mdc-list-item
+  [attributes children]
+  (let [[attributes class] (split-map attributes :class)]
+    (li :class (cons "mdc-list-item" (sequence class)) attributes children)))
+
+(defelem mdc-toolbar
+  [attributes children]
+  (let [[attributes title] (split-map attributes :title)]
+    (header
+      :class "mdc-toolbar"
+      (div
+        :class "mdc-toolbar__row"
+        (section
+          :class "mdc-toolbar__section mdc-toolbar__section--align-start"
+          (span :class "mdc-toolbar__title" title))))))
+
+
+(defelem mdc-layout-grid
+  [attributes children]
+  (let [[attributes class] (split-map attributes :class)]
+    (div :class (cons "mdc-layout-grid" (sequence class)) attributes children)))
+
+(defelem mdc-layout-grid-inner
+  [attributes children]
+  (let [[attributes class] (split-map attributes :class)]
+    (div :class (cons "mdc-layout-grid__inner" (sequence class)) attributes children)))
+
+(defelem mdc-layout-grid-cell
+  [attributes children]
+  (let [
+        [attributes class span] (split-map attributes :class :span)
+        class (flatten ["mdc-layout-grid__cell"
+                        (when span (str "mdc-layout-grid__cell--span-" span))
+                        (sequence class)])]
+    (div :class class attributes children)))
+
+(html
   (head
     (title "MoneySync")
+    (link :href "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" :rel "stylesheet")
     (link :href "cljsjs/material-components/development/material-components.inc.css" :rel "stylesheet")
-    (link :href "https://fonts.googleapis.com/icon?family=Material+Icons" :rel "stylesheet"))
-  (body
-    (h1 :class "mdc-typography--display2" "MoneySync")
-    (h2 :class "mdc-typography--display1" "Accounts")
-    (p :toggle loading? (text "Processing ~{loading?} requests..."))
-    (p :toggle error-message (text "Error: ~{error-message}"))
+    (link :href "https://fonts.googleapis.com/icon?family=Material+Icons" :rel "stylesheet")
+    (link :href "https://fonts.googleapis.com/css?family=Roboto:300,400,500" :rel "stylesheet"))
+  (body :class "mdc-typography"
+    (mdc-toolbar :title "MoneySync")
+    (mdc-layout-grid
+      (mdc-layout-grid-inner
+        (mdc-layout-grid-cell
+          :span 12
+          (h2 :class "mdc-typography--display2" "Accounts")
+          (p :toggle loading? (text "Processing ~{loading?} requests..."))
+          (p :toggle error-message (text "Error: ~{error-message}"))
 
-    (for-tpl
-      [{:keys [id name]} rpc/accounts]
-      (let [editing (cell false)]
-        (div :id id
-             (if-tpl editing
-                     (form :css/display "inline-block"
-                           :submit #(do
-                                      (->> % .-target form-values (rpc/update-account @id))
-                                      (reset! editing false))
-                           (mdc-text-field :name "name" :label "Account name" :value name)
-                           (mdc-button :icon "done"))
-                     [(span name)
-                      (button :class "mdc-button"
-                              :click #(swap! editing not)
-                              (i :class "material-icons mdc-button__icon" "edit"))])
-             (mdc-button :icon "delete" :click #(rpc/delete-account @id)))))
-    (form :submit #(let
-                     [form (.-target %)]
-                     (rpc/create-account (form-values form))
-                     (.reset form))
-      (mdc-text-field :name "name" :label "New account name")
-      (mdc-button "Add account"))))
+          (mdc-list
+            (for-tpl
+              [{:keys [id name]} rpc/accounts]
+              (let [editing (cell false)]
+                (mdc-list-item
+                  :id id
+                  (if-tpl editing
+                          (form :css/display "inline-block"
+                                :submit #(do
+                                           (->> % .-target form-values (rpc/update-account @id))
+                                           (reset! editing false))
+                                (mdc-text-field :name "name" :placeholder "Account name" :value name)
+                                (mdc-button :icon "done"))
+                          [(span name)
+                           (button :class "mdc-button"
+                                   :click #(swap! editing not)
+                                   (i :class "material-icons mdc-button__icon" "edit"))])
+                  (mdc-button :icon "delete" :click #(rpc/delete-account @id))))))
+          (form :submit #(let
+                           [form (.-target %)]
+                           (rpc/create-account (form-values form))
+                           (.reset form))
+                (mdc-text-field :name "name" :label "New account name")
+                (mdc-button "Add account")))))))
