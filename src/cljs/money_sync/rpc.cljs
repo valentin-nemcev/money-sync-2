@@ -9,7 +9,8 @@
 (defc error nil)
 (defc loading [])
 
-(add-watch error nil (fn [_ _ _ error] (js/console.error (.-serverStack error))))
+(add-watch error nil (fn [_ _ _ error] (when error (js/console.error (.-serverStack error)))))
+(add-watch loading nil (fn [_ _ _ loading] (js/console.info (clj->js (map #(.state %) loading)))))
 
 (def list-accounts
   (mkremote 'money-sync.api/list-accounts accounts error loading))

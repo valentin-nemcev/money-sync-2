@@ -83,6 +83,35 @@
                         (sequence class)])]
     (div :class class attributes children)))
 
+(defelem mdc-linear-progress
+  [attributes children]
+  (div :class "mdc-linear-progress mdc-linear-progress--indeterminate"
+       (div :class "mdc-linear-progress__buffer")
+       (div :class "mdc-linear-progress__bar mdc-linear-progress__primary-bar"
+            (span :class "mdc-linear-progress__bar-inner"))
+       (div :class "mdc-linear-progress__bar mdc-linear-progress__secondary-bar"
+            (span :class "mdc-linear-progress__bar-inner"))))
+
+(defmethod do! :snackbar-message
+  [elem _ message]
+  (with-dom elem
+    (let [Snackbar js/window.mdc.snackbar.MDCSnackbar
+          snackbar (.attachTo Snackbar elem)]
+      (if message (.show snackbar #js {:message message})))))
+
+(defelem mdc-snackbar
+  [attributes children]
+  (let [Snackbar js/window.mdc.snackbar.MDCSnackbar
+        [attributes show] (split-map attributes :show)
+        elem (div
+               attributes
+               :class "mdc-snackbar mdc-snackbar--align-start"
+               attributes
+               (div :class "mdc-snackbar__text" children)
+               (div :class "mdc-snackbar__action-wrapper"
+                    (button :type "button" :class "mdc-snackbar__action-button")))]
+    elem))
+
 (html
   (head
     (title "MoneySync")
@@ -92,13 +121,21 @@
     (link :href "https://fonts.googleapis.com/css?family=Roboto:300,400,500" :rel "stylesheet"))
   (body :class "mdc-typography"
     (mdc-toolbar :title "MoneySync")
+    (div
+      :toggle loading?
+      :css {:position "fixed"
+            :right "var(--mdc-layout-grid-margin-desktop)"
+            :top "var(--mdc-layout-grid-margin-desktop)"
+            :padding "16px"
+            :background-color "var(--mdc-theme-background)"}
+      :class "mdc-card"
+      "Loading...")
     (mdc-layout-grid
       (mdc-layout-grid-inner
         (mdc-layout-grid-cell
           :span 12
           (h2 :class "mdc-typography--display2" "Accounts")
-          (p :toggle loading? (text "Processing ~{loading?} requests..."))
-          (p :toggle error-message (text "Error: ~{error-message}"))
+          (mdc-snackbar :snackbar-message error-message (text "Error: ~{error-message}"))
 
           (mdc-list
             (for-tpl
