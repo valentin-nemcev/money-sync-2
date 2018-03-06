@@ -24,8 +24,10 @@
                             [com.cemerick/piggieback "0.2.1" :scope "test"]
                             [weasel "0.7.0" :scope "test"]
                             [org.clojure/tools.nrepl "0.2.12" :scope "test"]
-                            [cljsjs/material-components "0.25.0-0"]]
-)
+                            [cljsjs/material-components "0.25.0-0"]
+                            [clojurewerkz/money "1.10.0"]
+                            [org.joda/joda-money "0.12"]
+                            [com.cemerick/pomegranate "1.0.0"]])
 
 (require
   'boot.lein
@@ -34,6 +36,7 @@
   '[hoplon.boot-hoplon :refer [hoplon prerender]]
   '[pandeiro.boot-http :refer [serve]]
   '[adzerk.boot-test :refer [test]]
+  '[com.cemerick.pomegranate :refer [pomegranate]]
   'money-sync.db)
 
 ; this will generate project.clj on every run
@@ -97,6 +100,8 @@
 
 (require 'migratus.core)
 
+(def project-dir (-> (java.io.File. "migrations/") .getAbsolutePath))
+
 (def config {:store         :database
              :migration-dir "migrations/"
              :db            {:classname   "org.postgresql.Driver"
@@ -111,22 +116,56 @@
 
 ; Boot deftask options DSL:
 ; https://github.com/boot-clj/boot/wiki/Task-Options-DSL
+
 (deftask migratus-migrate
+  "Bring up any migrations that are not completed"
   []
   (println (migratus.core/migrate config)))
 
 (deftask migratus-up
-  [m migration-id MIGRATIONID #{int} "Migration ids"]
+  "Bring up the migrations identified by ids"
+  [m migration-id MIGRATIONID #{int} " Migration ids "]
   (println (apply migratus.core/up config migration-id)))
 
 (deftask migratus-down
-  [m migration-id MIGRATIONID [int] "Migration ids"]
+  "Bring down the migrations identified by ids"
+  [m migration-id MIGRATIONID [int] " Migration ids "]
   (println (apply migratus.core/down config migration-id)))
 
 (deftask migratus-pending
+  "List pending migrations"
   []
   (println (migratus.core/pending-list config)))
 
 (deftask migratus-create
-   [n name NAME str "Migration name"]
-   (println (migratus.core/create config name)))
+         "Create a new migration with the current date"
+         [n name NAME str " Migration name "]
+         (prn "hey there!")
+         (prn "project dir" project-dir)
+
+         ;; boot env
+         ;(set-env! :boot-class-path (str (get-env :boot-class-path) ";" (get-env :fake-class-path)))
+         ;(prn (get-env :boot-class-path))
+         ;(prn (get-env :fake-class-path))
+         ;(prn (get-env))
+
+         ;; java class loader
+         ;(prn "current class loader" (.getContextClassLoader (Thread/currentThread)))
+         ;(prn "url array" [(.toURL (.toURI (java.io.File. project-dir)))])
+         ;(prn "new class loader" (java.net.URLClassLoader/newInstance (into-array [(.toURL (.toURI (java.io.File. project-dir)))]) (.getContextClassLoader (Thread/currentThread))))
+         ;(.setContextClassLoader (Thread/currentThread) (java.net.URLClassLoader/newInstance (into-array [(.toURL (.toURI (java.io.File. project-dir)))]) (.getContextClassLoader (Thread/currentThread))))
+
+         ;; java classpath env var
+
+         ;; clojure add classpath
+         ;(add-classpath (.toURL (.toURI (java.io.File. project-dir))))
+
+         ;; pomegranate
+         (com.cemerick.pomegranate/add-classpath )
+
+         (prn "classpath")
+         (map prn clojure.java.classpath/classpath-directories)
+         (prn "migration-dir" (migratus.migrations/find-or-create-migration-dir (migratus.utils/get-migration-dir config)))
+         ;(prn (clojure.java.io/resource "migrations"))
+         ;(prn (-> (java.io.File. ".") .getAbsolutePath))
+         (println (migratus.core/create config name)))
